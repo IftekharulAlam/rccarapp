@@ -15,11 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text("MY RC Car App")),
-        body: const MyStatefulWidget(),
+        //appBar: AppBar(title: const Text("MY RC Car App")),
+        body: MyStatefulWidget(),
       ),
     );
   }
@@ -69,90 +69,126 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    mytimer2.cancel();
-                    writeData("1", "B");
-                  },
-                  onLongPressStart: (detail) {
-                    mytimer2.cancel();
-                    setState(() {
-                      mytimer = Timer.periodic(const Duration(), (t) {
-                        writeData("1", "B");
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      mytimer2.cancel();
+                      writeData("1", "B");
+                      timerfunction();
+                    },
+                    onLongPressStart: (detail) {
+                      mytimer2.cancel();
+                      setState(() {
+                        mytimer = Timer.periodic(const Duration(), (t) {
+                          writeData("1", "B");
+                        });
                       });
-                    });
-                  },
-                  onLongPressEnd: (detail) {
-                    mytimer.cancel();
-                    //timerfunction();
-                  },
-                  child: Container(
-                    height: 200,
-                    width: 180,
-                    padding: const EdgeInsets.all(10),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 100,
+                    },
+                    onLongPressEnd: (detail) {
+                      mytimer.cancel();
+                      timerfunction();
+                    },
+                    child: Container(
+                      height: 250,
+                      //width: 180,
+                      padding: const EdgeInsets.all(10),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 100,
+                      ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    writeData("1", "F");
-                  },
-                  onLongPressStart: (detail) {
-                    setState(() {
-                      mytimer = Timer.periodic(const Duration(), (t) {
-                        writeData("1", "F");
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      mytimer2.cancel();
+                      writeData("1", "F");
+                      timerfunction();
+                    },
+                    onLongPressStart: (detail) {
+                      mytimer2.cancel();
+                      setState(() {
+                        mytimer = Timer.periodic(const Duration(), (t) {
+                          writeData("1", "F");
+                        });
                       });
-                    });
-                  },
-                  onLongPressEnd: (detail) {
-                    mytimer.cancel();
-                  },
-                  child: Container(
-                    height: 200,
-                    width: 180,
-                    padding: const EdgeInsets.all(10),
-                    child: const Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 100,
+                    },
+                    onLongPressEnd: (detail) {
+                      mytimer.cancel();
+                      timerfunction();
+                    },
+                    child: Container(
+                      height: 250,
+                      //width: 180,
+                      padding: const EdgeInsets.all(10),
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        size: 100,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 100,
-            ),
-            Container(
-              height: 200,
-              width: 150,
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                child: const Icon(
-                  Icons.arrow_upward,
-                  size: 100,
-                ),
-                onPressed: () {
-                  //  login();
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  mytimer2.cancel();
                   writeData("1", "L");
+                  timerfunction();
                 },
+                onLongPressStart: (detail) {
+                  mytimer2.cancel();
+                  setState(() {
+                    mytimer = Timer.periodic(const Duration(), (t) {
+                      writeData("1", "L");
+                    });
+                  });
+                },
+                onLongPressEnd: (detail) {
+                  mytimer.cancel();
+                  timerfunction();
+                },
+                child: Container(
+                  height: 250,
+                  //width: 180,
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(
+                    Icons.arrow_upward,
+                    size: 100,
+                  ),
+                ),
               ),
             ),
-            Container(
-              height: 200,
-              width: 150,
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                child: const Icon(
-                  Icons.arrow_downward,
-                  size: 100,
-                ),
-                onPressed: () {
-                  //  login();
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  mytimer2.cancel();
                   writeData("1", "R");
+                  timerfunction();
                 },
+                onLongPressStart: (detail) {
+                  mytimer2.cancel();
+                  setState(() {
+                    mytimer = Timer.periodic(const Duration(), (t) {
+                      writeData("1", "R");
+                    });
+                  });
+                },
+                onLongPressEnd: (detail) {
+                  mytimer.cancel();
+                  timerfunction();
+                },
+                child: Container(
+                  height: 250,
+                  //width: 180,
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(
+                    Icons.arrow_downward,
+                    size: 100,
+                  ),
+                ),
               ),
             ),
           ],
