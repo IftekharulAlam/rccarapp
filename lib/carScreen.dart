@@ -10,7 +10,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 class carScreen extends StatefulWidget {
-  const carScreen({super.key});
+  Uint8List rawAddress;
+  carScreen({super.key, required this.rawAddress});
 
   @override
   State<carScreen> createState() => _carScreenState();
@@ -27,13 +28,13 @@ class _carScreenState extends State<carScreen> {
 
   void timerfunction() {
     mytimer2 = Timer.periodic(const Duration(milliseconds: 1), (timer) {
-      writeData("1", "S");
+      writeData("1", "S", widget.rawAddress);
       //print("Stop");
     });
   }
 
-  void writeData(String deviceID, String command) {
-    Uint8List rawAddress = Uint8List.fromList([192, 168, 0, 102]);
+  void writeData(String deviceID, String command, rawAddress) {
+    //Uint8List rawAddress = Uint8List.fromList([192, 168, 0, 102]);
     RawDatagramSocket.bind(InternetAddress.anyIPv4, 0)
         .then((RawDatagramSocket socket) {
       // print('Sending from ${socket.address.address}:${socket.port}');
@@ -66,27 +67,14 @@ class _carScreenState extends State<carScreen> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: ElevatedButton(
                 child: const Text('Connect'),
-                onPressed: () {
-                  // writeData(dropdownvalue, myip.text);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => const carScreen()),
-                  // );
-                },
+                onPressed: () {},
               ),
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Joystick(
-                  // stick: Container(
-                  //   width: 50,
-                  //   height: 50,
-                  //   color:Color.fromARGB(31, 19, 1, 1),
-                  // ),
                   mode: JoystickMode.horizontalAndVertical,
-                  // period: Duration(),
                   onStickDragEnd: () {
                     timerfunction();
                   },
@@ -94,32 +82,60 @@ class _carScreenState extends State<carScreen> {
                     setState(() {
                       if (details.x > 0.3 && details.y == 0.0) {
                         //Up
-                        //print("UP");
+                        // print("UP");
                         mytimer2.cancel();
 
-                        writeData("1", "F");
+                        writeData("1", "F", widget.rawAddress);
                       }
                       if (details.x < -0.3 && details.y == 0.0) {
                         //Down
-                        //print("down");
+                        // print("down");
                         mytimer2.cancel();
 
-                        writeData("1", "B");
+                        writeData("1", "B", widget.rawAddress);
                       }
                       if (details.x == 0.0 && details.y < 0.3) {
                         //Left
-                        //print("Left");
+                        // print("Left");
                         mytimer2.cancel();
 
-                        writeData("1", "L");
+                        writeData("1", "L", widget.rawAddress);
                       }
                       if (details.x == 0.0 && details.y > 0.3) {
                         //Right
-                        //print("Right");
+                        // print("Right");
                         mytimer2.cancel();
 
-                        writeData("1", "R");
+                        writeData("1", "R", widget.rawAddress);
                       }
+                      // if (details.x > 0.3 && details.y > 0.3) {
+                      //   //ForwardRight
+                      //   print("ForwardRight");
+                      //   mytimer2.cancel();
+
+                      //   writeData("1", "G", widget.rawAddress);
+                      // }
+                      // if (details.x == 0.0 && details.y > 0.3) {
+                      //   //Right
+                      //   //print("Right");
+                      //   mytimer2.cancel();
+
+                      //   writeData("1", "R", widget.rawAddress);
+                      // }
+                      // if (details.x == 0.0 && details.y > 0.3) {
+                      //   //Right
+                      //   //print("Right");
+                      //   mytimer2.cancel();
+
+                      //   writeData("1", "R", widget.rawAddress);
+                      // }
+                      // if (details.x == 0.0 && details.y > 0.3) {
+                      //   //Right
+                      //   //print("Right");
+                      //   mytimer2.cancel();
+
+                      //   writeData("1", "R", widget.rawAddress);
+                      // }
                     });
                   },
                 ),

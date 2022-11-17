@@ -2,9 +2,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -18,6 +21,8 @@ class firstScreen extends StatefulWidget {
 }
 
 class _firstScreenState extends State<firstScreen> {
+  TextEditingController device_ip = TextEditingController();
+
   Future writeData(String DeviceID, String userip) async {
     http.Response response = await http.post(
         Uri.parse("http://192.168.0.100:8000/writeRequest"),
@@ -94,6 +99,17 @@ class _firstScreenState extends State<firstScreen> {
                 style: const TextStyle(fontSize: 20),
               ),
             ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: device_ip,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Device Ip address',
+                ),
+              ),
+            ),
             Row(
               children: [
                 Container(
@@ -137,10 +153,41 @@ class _firstScreenState extends State<firstScreen> {
                 child: const Text('Connect'),
                 onPressed: () {
                   // writeData(dropdownvalue, myip.text);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const carScreen()),
-                  );
+
+                  if (device_ip.text == "") {
+                    Fluttertoast.showToast(
+                        msg: "Invalid",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  } else {
+                    List<String> myst = device_ip.text.split('.');
+                    List<int> numbers = myst.map(int.parse).toList();
+                    Uint8List rawAddress;
+                    rawAddress = Uint8List.fromList(numbers);
+
+                    if (rawAddress.length < 4) {
+                      Fluttertoast.showToast(
+                          msg: "Invalid",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => carScreen(
+                                  rawAddress: rawAddress,
+                                )),
+                      );
+                    }
+                  }
                 },
               ),
             ),
